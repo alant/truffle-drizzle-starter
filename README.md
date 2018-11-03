@@ -1,0 +1,1 @@
+Aiming to make an intuitive starter project that utilizes popular frameworks for easy dapp development. 
