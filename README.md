@@ -6,6 +6,7 @@ Aiming to make an intuitive starter project that utilizes popular frameworks for
 truffle migrate
 ```
 2. link contract build directory to react client
+
 I've only verified the following on MacOS. 
 ```bash
 # For MacOS and Linux
