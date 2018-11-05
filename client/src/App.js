@@ -41,19 +41,28 @@ class App extends Component {
   }
 
   async getStoredData() {
-    console.log("componentDidMount!");
-    const contract = this.contracts.SimpleStorage;
-    console.log("this.contracts: ",  this.contracts);
-    console.log("contract: ", contract);
-
+    // const contract = this.contracts.SimpleStorage;
     let storedData = await this.contracts.SimpleStorage.methods.storedData_().call();
     this.setState({storedData: storedData});
-    console.log("storedData: ", storedData);    
+    // console.log("storedData: ", storedData);    
+  }
+
+  showCheckMetaMaskOverlay() {
+    console.log("show the overlay@!");
+  }
+  showMetaMaskRejectMessage() {
+    console.log("too bad you rejected it@!");
   }
 
   componentDidUpdate(prevProps) {
     if (this.props.SimpleStorage.initialized && this.props.SimpleStorage.initialized !== prevProps.SimpleStorage.initialized) {
       this.getStoredData();
+    }
+    if (this.props.checkMetaMask && this.props.checkMetaMask !== prevProps.checkMetaMask) {
+      this.showCheckMetaMaskOverlay();
+    }
+    if (this.props.metaMaskReject && this.props.metaMaskReject !== prevProps.metaMaskReject) {
+      this.showMetaMaskRejectMessage();
     }
   }
 
@@ -62,7 +71,7 @@ class App extends Component {
   }
 
   handleSubmit = (event) => {    
-    console.log('A val was submitted: ' + this.state.newVal);
+    // console.log('A val was submitted: ' + this.state.newVal);
     const stackId = this.contracts.SimpleStorage.methods.set.cacheSend(this.state.newVal);
     event.preventDefault();
   }
@@ -119,7 +128,9 @@ App.contextTypes = {
 const mapStateToProps = state => {
   return {
     drizzleStatus: state.drizzleStatus,
-    SimpleStorage: state.contracts.SimpleStorage
+    SimpleStorage: state.contracts.SimpleStorage,
+    checkMetaMask: state.dappReducer.checkMetaMask,
+    metaMaskReject: state.dappReducer.metaMaskReject
   }
 }
 

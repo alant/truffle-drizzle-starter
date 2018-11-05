@@ -10,12 +10,14 @@ import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import { drizzleReducers, generateContractsInitialState } from 'drizzle';
 import createSagaMiddleware from 'redux-saga';
 import rootSaga from './sagas';
+import dappReducer from './redux';
 
 const drizzleOptions = {
   contracts: [SimpleStorage]
 };
 
 const reducer = combineReducers({
+  dappReducer,
   ...drizzleReducers
 });
 
