@@ -13,6 +13,15 @@ import Grid from '@material-ui/core/Grid';
 import FormControl from '@material-ui/core/FormControl';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import LinearProgress from '@material-ui/core/LinearProgress';
+import Snackbar from '@material-ui/core/Snackbar';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
 
 import { withStyles } from '@material-ui/core/styles';
 
@@ -77,7 +86,7 @@ class App extends Component {
   }
 
   render() {
-    const { classes } = this.props;
+    const { classes, onMetaMaskCheckDone, onTxErrorDone } = this.props;
     return (
       <div className="App">
         <CssBaseline />
@@ -111,6 +120,47 @@ class App extends Component {
             </div>
           </Grid>
         </main>
+        <Dialog
+          open={this.props.checkMetaMask}
+          onClose={onMetaMaskCheckDone}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">{"It's time to check your metamask extension"}
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              Please go to MetaMask's window to finish the transaction.
+              <LinearProgress />
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={onMetaMaskCheckDone} color="primary" autoFocus>
+              Done
+            </Button>
+          </DialogActions>
+        </Dialog>
+        <Snackbar
+          anchorOrigin={{ 'vertical': 'bottom', 'horizontal': 'right'} }
+          open={this.props.metaMaskReject}
+          autoHideDuration={6000}
+          onClose={onTxErrorDone}
+          ContentProps={{
+            'aria-describedby': 'message-id',
+          }}
+          message={<span id="message-id">You rejected the TX</span>}
+          action={[
+            <IconButton
+              key="close"
+              aria-label="Close"
+              color="inherit"
+              className={classes.close}
+              onClick={onTxErrorDone}
+            >
+              <CloseIcon />
+            </IconButton>,
+          ]}
+        />
         <p> Built by alant with <span role="img" aria-label="Love">❤️</span> </p>
       </div>
     );
@@ -134,5 +184,12 @@ const mapStateToProps = state => {
   }
 }
 
-export default drizzleConnect(withStyles(styles)(App), mapStateToProps);
+const mapDispatchToProps = dispatch => {
+  return {
+    onMetaMaskCheckDone: () => dispatch({ type: "CHECK_METAMASK_DONE" }),
+    onTxErrorDone: () => dispatch({ type: "TX_ERROR_METAMASK_DONE" })
+  };
+};
+
+export default drizzleConnect(withStyles(styles)(App), mapStateToProps, mapDispatchToProps);
 // export default App;
