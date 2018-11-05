@@ -10,8 +10,14 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
+import FormControl from '@material-ui/core/FormControl';
+import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
 
 import { withStyles } from '@material-ui/core/styles';
+
+import { drizzleConnect } from 'drizzle-react'
+
 
 const styles = theme => ({
   appBar: {
@@ -28,6 +34,39 @@ const styles = theme => ({
 })
 
 class App extends Component {
+  constructor(props, context) {
+    super(props);
+    this.state = { storedData: null, newVal: null };
+    this.contracts = context.drizzle.contracts;
+  }
+
+  async getStoredData() {
+    console.log("componentDidMount!");
+    const contract = this.contracts.SimpleStorage;
+    console.log("this.contracts: ",  this.contracts);
+    console.log("contract: ", contract);
+
+    let storedData = await this.contracts.SimpleStorage.methods.storedData_().call();
+    this.setState({storedData: storedData});
+    console.log("storedData: ", storedData);    
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.SimpleStorage.initialized && this.props.SimpleStorage.initialized !== prevProps.SimpleStorage.initialized) {
+      this.getStoredData();
+    }
+  }
+
+  handleChange = (event) => {
+    this.setState({newVal: event.target.value});
+  }
+
+  handleSubmit = (event) => {    
+    console.log('A val was submitted: ' + this.state.newVal);
+    const stackId = this.contracts.SimpleStorage.methods.set.cacheSend(this.state.newVal);
+    event.preventDefault();
+  }
+
   render() {
     const { classes } = this.props;
     return (
@@ -43,10 +82,23 @@ class App extends Component {
         </AppBar>
         <main>
           <Grid container spacing={40} alignItems="flex-end">
-            <div className={classes.heroContent}>
-              <Button variant="contained" color="primary">
-                Hello World
-              </Button>
+            <div className={classes.heroContent}>             
+                <div>
+                  <Typography variant="subtitle1" align="center">
+                    Storedata: {this.props.SimpleStorage.initialized ? ( this.state.storedData ) : (
+                      <span>Loading...</span>
+                      )}
+                  </Typography>
+                  <form onSubmit={this.handleSubmit} className={classes.form}>
+                    <FormControl margin="normal" required fullWidth>
+                      <InputLabel htmlFor="contractDataInput">New Value:</InputLabel>
+                      <Input onChange={this.handleChange} id="contractDataInput" name="contractDataInput" autoFocus />
+                    </FormControl>
+                    <Button type="submit" variant="contained" color="primary" className={classes.submit}>
+                      Set
+                    </Button>
+                  </form>
+                </div>
             </div>
           </Grid>
         </main>
@@ -60,5 +112,16 @@ App.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(App);
+App.contextTypes = {
+  drizzle: PropTypes.object
+}
+
+const mapStateToProps = state => {
+  return {
+    drizzleStatus: state.drizzleStatus,
+    SimpleStorage: state.contracts.SimpleStorage
+  }
+}
+
+export default drizzleConnect(withStyles(styles)(App), mapStateToProps);
 // export default App;
