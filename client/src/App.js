@@ -22,6 +22,7 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 import { withStyles } from '@material-ui/core/styles';
 
@@ -39,7 +40,7 @@ const styles = theme => ({
     maxWidth: 600,
     margin: '0 auto',
     padding: `${theme.spacing.unit * 8}px 0 ${theme.spacing.unit * 6}px`,
-  },
+  }
 })
 
 class App extends Component {
@@ -73,6 +74,10 @@ class App extends Component {
     if (this.props.metaMaskReject && this.props.metaMaskReject !== prevProps.metaMaskReject) {
       this.showMetaMaskRejectMessage();
     }
+    if (this.props.txSuccessful && prevProps.txSuccessful === false) {
+      this.getStoredData();
+    }
+
   }
 
   handleChange = (event) => {
@@ -86,7 +91,7 @@ class App extends Component {
   }
 
   render() {
-    const { classes, onMetaMaskCheckDone, onTxErrorDone } = this.props;
+    const { classes, onMetaMaskCheckDone, onTxErrorDone, onCheckingTxDone } = this.props;
     return (
       <div className="App">
         <CssBaseline />
@@ -161,6 +166,34 @@ class App extends Component {
             </IconButton>,
           ]}
         />
+        <Snackbar
+          anchorOrigin={{ 'vertical': 'bottom', 'horizontal': 'right'} }
+          open={this.props.checkingTx}
+          autoHideDuration={45000}
+          onClose={onCheckingTxDone}
+          ContentProps={{
+            'aria-describedby': 'message-id',
+          }}
+          message={
+            <div>
+              <span id="message-id">
+                Checking transaction on blockchain 
+              </span>
+              <CircularProgress size={20} />
+            </div>
+          }
+          action={[
+            <IconButton
+              key="close"
+              aria-label="Close"
+              color="inherit"
+              className={classes.close}
+              onClick={onCheckingTxDone}
+            >
+              <CloseIcon />
+            </IconButton>,
+          ]}
+        />
         <p> Built by alant with <span role="img" aria-label="Love">❤️</span> </p>
       </div>
     );
@@ -180,14 +213,17 @@ const mapStateToProps = state => {
     drizzleStatus: state.drizzleStatus,
     SimpleStorage: state.contracts.SimpleStorage,
     checkMetaMask: state.dappReducer.checkMetaMask,
-    metaMaskReject: state.dappReducer.metaMaskReject
+    metaMaskReject: state.dappReducer.metaMaskReject,
+    checkingTx: state.dappReducer.checkingTx,
+    txSuccessful: state.dappReducer.txSuccessful
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
     onMetaMaskCheckDone: () => dispatch({ type: "CHECK_METAMASK_DONE" }),
-    onTxErrorDone: () => dispatch({ type: "TX_ERROR_METAMASK_DONE" })
+    onTxErrorDone: () => dispatch({ type: "TX_ERROR_METAMASK_DONE" }),
+    onCheckingTxDone: () => dispatch({ type: "CHECKING_TX_UI_DONE" })
   };
 };
 
