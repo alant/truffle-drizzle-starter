@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 // import logo from './logo.svg';
 import './App.css';
 
-import PropTypes from 'prop-types';
-
 import CssBaseline from '@material-ui/core/CssBaseline';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -26,7 +24,8 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 import { withStyles } from '@material-ui/core/styles';
 
-import { drizzleConnect } from 'drizzle-react'
+import PropTypes from 'prop-types';
+import { drizzleConnect } from 'drizzle-react';
 
 
 const styles = theme => ({
@@ -41,7 +40,7 @@ const styles = theme => ({
     margin: '0 auto',
     padding: `${theme.spacing.unit * 8}px 0 ${theme.spacing.unit * 6}px`,
   }
-})
+});
 
 class App extends Component {
   constructor(props, context) {
