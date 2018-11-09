@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-// import logo from './logo.svg';
+
 import './App.css';
 
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -227,4 +227,3 @@ const mapDispatchToProps = dispatch => {
 };
 
 export default drizzleConnect(withStyles(styles)(App), mapStateToProps, mapDispatchToProps);
-// export default App;
