@@ -1,11 +1,17 @@
-// action types
-const CHECK_METAMASK = "CHECK_METAMASK";
-const CHECK_METAMASK_DONE = "CHECK_METAMASK_DONE";
-const TX_ERROR_METAMASK = "TX_ERROR_METAMASK";
-const TX_ERROR_METAMASK_DONE = "TX_ERROR_METAMASK_DONE";
-const TX_SUCCESSFUL_UPDATE_UI = "TX_SUCCESSFUL_UPDATE_UI";
-const CHECKING_TX_UI = "CHECKING_TX_UI";
-const CHECKING_TX_UI_DONE = "CHECKING_TX_UI_DONE";
+import { combineReducers } from 'redux';
+import { connectRouter } from 'connected-react-router'
+import { drizzleReducers } from 'drizzle';
+
+import {
+  CHECK_METAMASK,
+  CHECK_METAMASK_DONE,
+  TX_ERROR_METAMASK,
+  TX_ERROR_METAMASK_DONE,
+  CHECKING_TX_UI,
+  CHECKING_TX_UI_DONE,
+  TX_SUCCESSFUL_UPDATE_UI
+} from './actions';
+
 
 // reducer with initial state
 const initialState = {
@@ -15,7 +21,7 @@ const initialState = {
   txSuccessful: false
 };
 
-export default function dappReducer(state = initialState, action) {
+function dappReducer(state = initialState, action) {
   switch (action.type) {
     case CHECK_METAMASK:
       return { ...state, checkMetaMask: true };
@@ -35,3 +41,9 @@ export default function dappReducer(state = initialState, action) {
       return state;
   }
 }
+
+export default (history) => combineReducers({
+  router: connectRouter(history),
+  dappReducer,
+  ...drizzleReducers
+});

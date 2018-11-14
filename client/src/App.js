@@ -84,8 +84,7 @@ class App extends Component {
   }
 
   handleSubmit = (event) => {    
-    // console.log('A val was submitted: ' + this.state.newVal);
-    const stackId = this.contracts.SimpleStorage.methods.set.cacheSend(this.state.newVal);
+    this.contracts.SimpleStorage.methods.set.cacheSend(this.state.newVal);
     event.preventDefault();
   }
 
