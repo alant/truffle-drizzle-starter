@@ -8,15 +8,6 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
-import FormControl from '@material-ui/core/FormControl';
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import LinearProgress from '@material-ui/core/LinearProgress';
 import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
@@ -26,7 +17,9 @@ import { withStyles } from '@material-ui/core/styles';
 
 import PropTypes from 'prop-types';
 import { drizzleConnect } from 'drizzle-react';
-
+import { BrowserRouter as Router, Route, withRouter } from 'react-router-dom';
+import Home from './Home';
+import Edit from './Edit';
 
 const styles = theme => ({
   appBar: {
@@ -41,6 +34,18 @@ const styles = theme => ({
     padding: `${theme.spacing.unit * 8}px 0 ${theme.spacing.unit * 6}px`,
   }
 });
+
+const EditBtn = withRouter(({ history }) => (
+  <Button color="inherit" onClick={() => { history.push('/edit') }}>
+    Edit
+  </Button>
+))
+
+const HomeBtn = withRouter(({ history }) => (
+  <Button color="inherit" onClick={() => { history.push('/') }}>
+    Home
+  </Button>
+))
 
 class App extends Component {
   constructor(props, context) {
@@ -91,6 +96,7 @@ class App extends Component {
   render() {
     const { classes, onMetaMaskCheckDone, onTxErrorDone, onCheckingTxDone } = this.props;
     return (
+      <Router>
       <div className="App">
         <CssBaseline />
         <AppBar position="static" color="default" className={classes.appBar}>
@@ -98,11 +104,16 @@ class App extends Component {
             <Typography variant="h6" color="inherit" align="left" noWrap className={classes.toolbarTitle}>
               Awesome Dapp
             </Typography>
-            <Button color="inherit">Login</Button>
+            <HomeBtn />
+            <EditBtn />
           </Toolbar>
         </AppBar>
         <main>
-          <Grid container spacing={40} alignItems="flex-end">
+         
+
+          <Route exact path="/" component={Home} />
+          <Route path="/edit" component={Edit} />
+          {/* <Grid container spacing={40} alignItems="flex-end">
             <div className={classes.heroContent}>             
                 <div>
                   <Typography variant="subtitle1" align="center">
@@ -121,49 +132,9 @@ class App extends Component {
                   </form>
                 </div>
             </div>
-          </Grid>
+          </Grid> */}
         </main>
-        <Dialog
-          open={this.props.checkMetaMask}
-          onClose={onMetaMaskCheckDone}
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
-        >
-          <DialogTitle id="alert-dialog-title">{"It's time to check your metamask extension"}
-          </DialogTitle>
-          <DialogContent>
-            <DialogContentText id="alert-dialog-description">
-              Please go to MetaMask's window to finish the transaction.
-              <LinearProgress />
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={onMetaMaskCheckDone} color="primary" autoFocus>
-              Done
-            </Button>
-          </DialogActions>
-        </Dialog>
-        <Snackbar
-          anchorOrigin={{ 'vertical': 'bottom', 'horizontal': 'right'} }
-          open={this.props.metaMaskReject}
-          autoHideDuration={6000}
-          onClose={onTxErrorDone}
-          ContentProps={{
-            'aria-describedby': 'message-id',
-          }}
-          message={<span id="message-id">You rejected the TX</span>}
-          action={[
-            <IconButton
-              key="close"
-              aria-label="Close"
-              color="inherit"
-              className={classes.close}
-              onClick={onTxErrorDone}
-            >
-              <CloseIcon />
-            </IconButton>,
-          ]}
-        />
+
         <Snackbar
           anchorOrigin={{ 'vertical': 'bottom', 'horizontal': 'right'} }
           open={this.props.checkingTx}
@@ -192,8 +163,11 @@ class App extends Component {
             </IconButton>,
           ]}
         />
+
         <p> Built by alant with <span role="img" aria-label="Love">❤️</span> </p>
       </div>
+      </Router>
+
     );
   }
 }

@@ -10,6 +10,7 @@ function* showTxErrorMsg() {
 }
 
 function* showCheckingTxMsg() {
+  yield put({ type: 'REDIRECT_HOME'});
   yield put({ type: 'CHECKING_TX_UI'});
 }
 

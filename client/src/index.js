@@ -6,15 +6,16 @@ import * as serviceWorker from './serviceWorker';
 
 import { DrizzleProvider } from 'drizzle-react';
 import SimpleStorage from './contracts/SimpleStorage.json';
-import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
-import { drizzleReducers, generateContractsInitialState } from 'drizzle';
+import { createStore, applyMiddleware, compose } from 'redux';
+import { generateContractsInitialState } from 'drizzle';
 import createSagaMiddleware from 'redux-saga';
 import rootSaga from './sagas';
-import dappReducer from './actions';
+// import { createBrowserHistory } from 'history';
 import reducer from './reducers';
-import { createBrowserHistory } from 'history';
-import createRootReducer from './reducers';
-import { routerMiddleware } from 'connected-react-router';
+// import { routerMiddleware, ConnectedRouter } from 'connected-react-router';
+// import { BrowserRouter, Route, browserHistory } from 'react-router'
+// import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
+import { BrowserRouter as Router } from "react-router-dom";
 
 const drizzleOptions = {
   contracts: [SimpleStorage]
@@ -34,15 +35,15 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const sagaMiddleware = createSagaMiddleware();
 
-const history = createBrowserHistory();
+// const history = createBrowserHistory();
 
 const store = createStore(
-  // reducer,
-  createRootReducer(history),
+  reducer,
+  // createRootReducer(history),
   initialState,
   composeEnhancers(
     applyMiddleware(
-      routerMiddleware(history),
+      // routerMiddleware,
       sagaMiddleware
     )
   )
@@ -50,9 +51,12 @@ const store = createStore(
 
 sagaMiddleware.run(rootSaga);
 
+// Create an enhanced history that syncs navigation events with the store
+// const history = syncHistoryWithStore(browserHistory, store)
+
 ReactDOM.render((
   <DrizzleProvider options={drizzleOptions} store={store}>
-    <App />
+     <App />
   </DrizzleProvider>
   ),
   document.getElementById('root')
