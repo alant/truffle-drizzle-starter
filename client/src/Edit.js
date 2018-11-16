@@ -31,7 +31,6 @@ class Edit extends Component {
 
   componentDidUpdate(prevProps) {
     if (this.props.redirectToHome && this.props.redirectToHome !== prevProps.redirectToHome) {
-      console.log("====> redirect to home here!");
       this.props.history.push('/');
     }
   }

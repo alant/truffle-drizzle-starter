@@ -39,6 +39,10 @@ class Home extends Component {
     if (this.props.SimpleStorage.initialized && this.props.SimpleStorage.initialized !== prevProps.SimpleStorage.initialized) {
       this.getStoredData();
     }
+    if (this.props.txSuccessful && prevProps.txSuccessful === false) {
+      this.getStoredData();
+    }
+
   }
 
   render() {
@@ -74,12 +78,15 @@ const mapStateToProps = state => {
   return {
     drizzleStatus: state.drizzleStatus,
     SimpleStorage: state.contracts.SimpleStorage,
-    checkMetaMask: state.dappReducer.checkMetaMask,
-    metaMaskReject: state.dappReducer.metaMaskReject,
-    checkingTx: state.dappReducer.checkingTx,
     txSuccessful: state.dappReducer.txSuccessful
   }
 }
 
+const mapDispatchToProps = dispatch => {
+  return {
+    onMetaMaskCheckDone: () => dispatch({ type: "CHECK_METAMASK_DONE" }),
+    onTxErrorDone: () => dispatch({ type: "TX_ERROR_METAMASK_DONE" }),
+  };
+};
 
-export default drizzleConnect(withStyles(styles)(Home), mapStateToProps);
+export default drizzleConnect(withStyles(styles)(Home), mapStateToProps, mapDispatchToProps);

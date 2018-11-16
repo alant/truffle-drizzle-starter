@@ -7,7 +7,6 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
 import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
@@ -54,36 +53,6 @@ class App extends Component {
     this.contracts = context.drizzle.contracts;
   }
 
-  async getStoredData() {
-    // const contract = this.contracts.SimpleStorage;
-    let storedData = await this.contracts.SimpleStorage.methods.storedData_().call();
-    this.setState({storedData: storedData});
-    // console.log("storedData: ", storedData);    
-  }
-
-  showCheckMetaMaskOverlay() {
-    console.log("show the overlay@!");
-  }
-  showMetaMaskRejectMessage() {
-    console.log("too bad you rejected it@!");
-  }
-
-  componentDidUpdate(prevProps) {
-    if (this.props.SimpleStorage.initialized && this.props.SimpleStorage.initialized !== prevProps.SimpleStorage.initialized) {
-      this.getStoredData();
-    }
-    if (this.props.checkMetaMask && this.props.checkMetaMask !== prevProps.checkMetaMask) {
-      this.showCheckMetaMaskOverlay();
-    }
-    if (this.props.metaMaskReject && this.props.metaMaskReject !== prevProps.metaMaskReject) {
-      this.showMetaMaskRejectMessage();
-    }
-    if (this.props.txSuccessful && prevProps.txSuccessful === false) {
-      this.getStoredData();
-    }
-
-  }
-
   handleChange = (event) => {
     this.setState({newVal: event.target.value});
   }
@@ -94,7 +63,7 @@ class App extends Component {
   }
 
   render() {
-    const { classes, onMetaMaskCheckDone, onTxErrorDone, onCheckingTxDone } = this.props;
+    const { classes, onCheckingTxDone } = this.props;
     return (
       <Router>
       <div className="App">
@@ -108,37 +77,15 @@ class App extends Component {
             <EditBtn />
           </Toolbar>
         </AppBar>
-        <main>
-         
-
+        <main>      
           <Route exact path="/" component={Home} />
           <Route path="/edit" component={Edit} />
-          {/* <Grid container spacing={40} alignItems="flex-end">
-            <div className={classes.heroContent}>             
-                <div>
-                  <Typography variant="subtitle1" align="center">
-                    Storedata: {this.props.SimpleStorage.initialized ? ( this.state.storedData ) : (
-                      <span>Loading...</span>
-                      )}
-                  </Typography>
-                  <form onSubmit={this.handleSubmit} className={classes.form}>
-                    <FormControl margin="normal" required fullWidth>
-                      <InputLabel htmlFor="contractDataInput">New Value:</InputLabel>
-                      <Input onChange={this.handleChange} id="contractDataInput" name="contractDataInput" autoFocus />
-                    </FormControl>
-                    <Button type="submit" variant="contained" color="primary" className={classes.submit}>
-                      Set
-                    </Button>
-                  </form>
-                </div>
-            </div>
-          </Grid> */}
         </main>
 
         <Snackbar
           anchorOrigin={{ 'vertical': 'bottom', 'horizontal': 'right'} }
           open={this.props.checkingTx}
-          autoHideDuration={45000}
+          autoHideDuration={60000}
           onClose={onCheckingTxDone}
           ContentProps={{
             'aria-describedby': 'message-id',
@@ -184,17 +131,12 @@ const mapStateToProps = state => {
   return {
     drizzleStatus: state.drizzleStatus,
     SimpleStorage: state.contracts.SimpleStorage,
-    checkMetaMask: state.dappReducer.checkMetaMask,
-    metaMaskReject: state.dappReducer.metaMaskReject,
-    checkingTx: state.dappReducer.checkingTx,
-    txSuccessful: state.dappReducer.txSuccessful
+    checkingTx: state.dappReducer.checkingTx
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    onMetaMaskCheckDone: () => dispatch({ type: "CHECK_METAMASK_DONE" }),
-    onTxErrorDone: () => dispatch({ type: "TX_ERROR_METAMASK_DONE" }),
     onCheckingTxDone: () => dispatch({ type: "CHECKING_TX_UI_DONE" })
   };
 };
