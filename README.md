@@ -7,7 +7,7 @@ truffle migrate
 ```
 2. link contract build directory to react client
 
-I've only verified the following on MacOS. 
+I verified the following on only MacOS and Ubuntu Linux. 
 ```bash
 # For MacOS and Linux
 cd client/src
@@ -18,4 +18,14 @@ ln -s ../../build/contracts contracts
 
 cd client/src
 mklink \D contracts ..\..\build\contracts
+```
+
+3. Run / build the react client 
+```bash
+# the folling commands run in client dir
+
+# run the client
+npm run start
+# build the client
+npm run build
 ```
