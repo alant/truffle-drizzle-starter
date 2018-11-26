@@ -1,0 +1,29 @@
+{
+  "name": "truffle-drizzle-starter",
+  "version": "1.0.0",
+  "description": "starter project boilerplate",
+  "main": "truffle.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "babel-polyfill": "^6.26.0",
+    "babel-register": "^6.26.0",
+    "dotenv": "^6.1.0",
+    "truffle-hdwallet-provider": "^0.0.6"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alant/truffle-drizzle-starter.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alant/truffle-drizzle-starter/issues"
+  },
+  "homepage": "https://github.com/alant/truffle-drizzle-starter#readme"
+}
