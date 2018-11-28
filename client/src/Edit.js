@@ -24,14 +24,16 @@ class Edit extends Component {
     this.contracts = context.drizzle.contracts;
   }
 
-  handleSubmit = (event) => {    
+  handleSubmit = (event) => {
     this.contracts.SimpleStorage.methods.set.cacheSend(this.state.newVal);
     event.preventDefault();
   }
 
   componentDidUpdate(prevProps) {
+    const { onRedirectToHomeDone } = this.props;
     if (this.props.redirectToHome && this.props.redirectToHome !== prevProps.redirectToHome) {
       this.props.history.push('/');
+      onRedirectToHomeDone();
     }
   }
 
@@ -118,7 +120,8 @@ const mapDispatchToProps = dispatch => {
   return {
     onMetaMaskCheckDone: () => dispatch({ type: "CHECK_METAMASK_DONE" }),
     onTxErrorDone: () => dispatch({ type: "TX_ERROR_METAMASK_DONE" }),
-    onCheckingTxDone: () => dispatch({ type: "CHECKING_TX_UI_DONE" })
+    onCheckingTxDone: () => dispatch({ type: "CHECKING_TX_UI_DONE" }),
+    onRedirectToHomeDone: () => dispatch({ type: "REDIRECT_TO_HOME_DONE"})
   };
 };
 
