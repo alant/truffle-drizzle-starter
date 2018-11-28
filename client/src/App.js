@@ -49,17 +49,7 @@ const HomeBtn = withRouter(({ history }) => (
 class App extends Component {
   constructor(props, context) {
     super(props);
-    this.state = { storedData: null, newVal: null };
     this.contracts = context.drizzle.contracts;
-  }
-
-  handleChange = (event) => {
-    this.setState({newVal: event.target.value});
-  }
-
-  handleSubmit = (event) => {    
-    this.contracts.SimpleStorage.methods.set.cacheSend(this.state.newVal);
-    event.preventDefault();
   }
 
   render() {
@@ -77,7 +67,7 @@ class App extends Component {
             <EditBtn />
           </Toolbar>
         </AppBar>
-        <main>      
+        <main>
           <Route exact path="/" component={Home} />
           <Route path="/edit" component={Edit} />
         </main>
@@ -93,7 +83,7 @@ class App extends Component {
           message={
             <div>
               <span id="message-id">
-                Checking transaction on blockchain 
+                Checking transaction on blockchain
               </span>
               <CircularProgress size={20} />
             </div>
