@@ -21,6 +21,7 @@ const TX_SUCCESSFUL_UPDATE_UI = "TX_SUCCESSFUL_UPDATE_UI";
 const CHECKING_TX_UI = "CHECKING_TX_UI";
 const CHECKING_TX_UI_DONE = "CHECKING_TX_UI_DONE";
 const REDIRECT_HOME = "REDIRECT_HOME";
+const REDIRECT_TO_HOME_DONE = "REDIRECT_TO_HOME_DONE";
 
 // reducer with initial state
 const initialState = {
@@ -49,6 +50,8 @@ function dappReducer(state = initialState, action) {
       return { ...state, checkingTx: false, txSuccessful: true };
     case REDIRECT_HOME:
       return { ...state, redirectToHome: true };
+    case REDIRECT_TO_HOME_DONE:
+      return { ...state, redirectToHome: false};
     default:
       return state;
   }
