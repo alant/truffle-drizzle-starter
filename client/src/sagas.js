@@ -30,7 +30,7 @@ function* pollSagaWorker() {
     counter += 1;
     const txHash = transactionStack[transactionStack.length - 1];
     const transactions = yield select(getTransactions);
-    // console.log("poll worker at work", counter, transactions[txHash].status, txHash, transactionStack, transactions);
+    console.log("poll worker at work", counter, transactions[txHash].status, txHash, transactionStack, transactions);
     yield call(delay, 1000);
     if (counter === 30) {
       yield put({ type: 'TX_POLL_TIMEOUT' });
