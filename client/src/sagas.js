@@ -35,8 +35,7 @@ function* pollSagaWorker() {
     console.log("poll worker at work", counter, transactions[txHash].status, txHash, transactionStack, transactions);
     yield call(delay, 1000);
     if (counter === 30) {
-      yield put({ type: 'TX_POLL_TIMEOUT' });
-      yield put({ type: 'TX_SUCCESSFUL_UPDATE_UI' });
+      yield [ put({ type: 'TX_POLL_TIMEOUT' }), put({ type: 'TX_SUCCESSFUL_UPDATE_UI' })];
     }
     if (transactions[txHash].status === 'success') {
       yield put({ type: 'TX_SUCCESSFUL_UPDATE_UI' });
@@ -59,7 +58,7 @@ export default function* root() {
   yield takeLatest('PUSH_TO_TXSTACK', showMetaMaskOverlay);
   yield takeLatest('TX_ERROR', showTxErrorMsg);
   yield takeLatest('TX_BROADCASTED', showCheckingTxMsg);
-  yield takeLatest('TX_SUCCESSFUL', txSuccessful);
+  // yield takeLatest('TX_SUCCESSFUL', txSuccessful);
   yield all(
     drizzleSagas.map(saga => fork(saga))
   );
