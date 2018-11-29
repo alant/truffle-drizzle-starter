@@ -36,6 +36,7 @@ function* pollSagaWorker() {
     yield call(delay, 1000);
     if (counter === 30) {
       yield put({ type: 'TX_POLL_TIMEOUT' });
+      yield put({ type: 'TX_SUCCESSFUL_UPDATE_UI' });
     }
     if (transactions[txHash].status === 'success') {
       yield put({ type: 'TX_SUCCESSFUL_UPDATE_UI' });
