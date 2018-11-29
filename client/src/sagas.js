@@ -12,8 +12,9 @@ function* showTxErrorMsg() {
 }
 
 function* showCheckingTxMsg() {
-  yield put({ type: 'REDIRECT_HOME'});
-  yield put({ type: 'CHECKING_TX_UI'});
+  yield put({ type: 'REDIRECT_HOME' });
+  yield put({ type: 'CHECKING_TX_UI' });
+  yield put({ type: 'POLL_START'});
 }
 
 function* txSuccessful() {
@@ -24,6 +25,7 @@ const getTransactionStack = (state) => state.transactionStack;
 const getTransactions = (state) => state.transactions;
 
 function* pollSagaWorker() {
+  console.log("pollSagaWorker Begin!!");
   let counter = 0
   const transactionStack = yield select(getTransactionStack);
   while (true) {
