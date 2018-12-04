@@ -21,6 +21,7 @@ const TX_SUCCESSFUL_UPDATE_UI = "TX_SUCCESSFUL_UPDATE_UI";
 const CHECKING_TX_UI = "CHECKING_TX_UI";
 const CHECKING_TX_UI_DONE = "CHECKING_TX_UI_DONE";
 const REDIRECT_HOME = "REDIRECT_HOME";
+const SET_DRIZZLE_STATE = "SET_DRIZZLE_STATE";
 
 // reducer with initial state
 const initialState = {
@@ -28,7 +29,8 @@ const initialState = {
   metaMaskReject: false,
   checkingTx: false,
   txSuccessful: false,
-  redirectToHome: false
+  redirectToHome: false,
+  drizzle: null
 };
 
 function dappReducer(state = initialState, action) {
@@ -49,6 +51,8 @@ function dappReducer(state = initialState, action) {
       return { ...state, checkingTx: false, txSuccessful: true };
     case REDIRECT_HOME:
       return { ...state, redirectToHome: true };
+    case SET_DRIZZLE_STATE:
+      return { ...state, drizzle: action.drizzle };
     default:
       return state;
   }

@@ -12,7 +12,6 @@ import createSagaMiddleware from 'redux-saga';
 import rootSaga from './sagas';
 import reducer from './reducers';
 
-
 const drizzleOptions = {
   contracts: [SimpleStorage]
 };
@@ -24,7 +23,9 @@ const initialState = {
 // Redux DevTools
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-const sagaMiddleware = createSagaMiddleware();
+const sagaMiddleware = createSagaMiddleware(
+  // { context: { drizzle } }
+);
 
 const store = createStore(
   reducer,

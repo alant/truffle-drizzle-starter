@@ -50,6 +50,8 @@ class App extends Component {
   constructor(props, context) {
     super(props);
     this.contracts = context.drizzle.contracts;
+    const { setDrizzleState } = this.props;
+    setDrizzleState(context.drizzle);
   }
 
   render() {
@@ -127,7 +129,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onCheckingTxDone: () => dispatch({ type: "CHECKING_TX_UI_DONE" })
+    onCheckingTxDone: () => dispatch({ type: "CHECKING_TX_UI_DONE" }),
+    setDrizzleState: (drizzle) => dispatch({ type: "SET_DRIZZLE_STATE", drizzle})
   };
 };
 
