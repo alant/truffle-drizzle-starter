@@ -51,68 +51,60 @@ class App extends Component {
     super(props);
     this.state = { storedData: null, newVal: null, drizzleState: null };
     this.contracts = context.drizzle.contracts;
-    // this.drizzleState = context.drizzle.store.getState();
   }
-
-  // componentDidUpdate(prevProps) {
-  //   if (this.props.SimpleStorage.initialized && this.props.SimpleStorage.initialized !== prevProps.SimpleStorage.initialized) {
-  //     this.setState({drizzleState: this.drizzleState});
-  //   }
-  // }
 
   render() {
     const { classes, onCheckingTxDone } = this.props;
     return (
       <Router>
-      <div className="App">
-        <CssBaseline />
-        <AppBar position="static" color="default" className={classes.appBar}>
-          <Toolbar>
-            <Typography variant="h6" color="inherit" align="left" noWrap className={classes.toolbarTitle}>
-              Awesome Dapp
-            </Typography>
-            <HomeBtn />
-            <EditBtn />
-          </Toolbar>
-        </AppBar>
-        <main>
-          <Route exact path="/" component={Home} />
-          <Route path="/edit" component={Edit} />
-        </main>
+        <div className="App">
+          <CssBaseline />
+          <AppBar position="static" color="default" className={classes.appBar}>
+            <Toolbar>
+              <Typography variant="h6" color="inherit" align="left" noWrap className={classes.toolbarTitle}>
+                Awesome Dapp
+              </Typography>
+              <HomeBtn />
+              <EditBtn />
+            </Toolbar>
+          </AppBar>
+          <main>
+            <Route exact path="/" component={Home} />
+            <Route path="/edit" component={Edit} />
+          </main>
 
-        <Snackbar
-          anchorOrigin={{ 'vertical': 'bottom', 'horizontal': 'right'} }
-          open={this.props.checkingTx}
-          autoHideDuration={60000}
-          onClose={onCheckingTxDone}
-          ContentProps={{
-            'aria-describedby': 'message-id',
-          }}
-          message={
-            <div>
-              <span id="message-id">
-                Checking transaction on blockchain
-              </span>
-              <CircularProgress size={20} />
-            </div>
-          }
-          action={[
-            <IconButton
-              key="close"
-              aria-label="Close"
-              color="inherit"
-              className={classes.close}
-              onClick={onCheckingTxDone}
-            >
-              <CloseIcon />
-            </IconButton>,
-          ]}
-        />
+          <Snackbar
+            anchorOrigin={{ 'vertical': 'bottom', 'horizontal': 'right'} }
+            open={this.props.checkingTx}
+            autoHideDuration={60000}
+            onClose={onCheckingTxDone}
+            ContentProps={{
+              'aria-describedby': 'message-id',
+            }}
+            message={
+              <div>
+                <span id="message-id">
+                  Checking transaction on blockchain
+                </span>
+                <CircularProgress size={20} />
+              </div>
+            }
+            action={[
+              <IconButton
+                key="close"
+                aria-label="Close"
+                color="inherit"
+                className={classes.close}
+                onClick={onCheckingTxDone}
+              >
+                <CloseIcon />
+              </IconButton>,
+            ]}
+          />
 
-        <p> Built by alant with <span role="img" aria-label="Love">❤️</span> </p>
-      </div>
+          <p> Built by alant with <span role="img" aria-label="Love">❤️</span> </p>
+        </div>
       </Router>
-
     );
   }
 }
