@@ -64,7 +64,7 @@ class Edit extends Component {
           </DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
-              Please go to MetaMask's window to finish the transaction.
+              {"Please go to MetaMask's window to finish the transaction."}
               <LinearProgress />
             </DialogContentText>
           </DialogContent>
@@ -106,12 +106,8 @@ Edit.contextTypes = {
 
 const mapStateToProps = state => {
   return {
-    drizzleStatus: state.drizzleStatus,
-    SimpleStorage: state.contracts.SimpleStorage,
     checkMetaMask: state.dappReducer.checkMetaMask,
     metaMaskReject: state.dappReducer.metaMaskReject,
-    checkingTx: state.dappReducer.checkingTx,
-    txSuccessful: state.dappReducer.txSuccessful,
     redirectToHome: state.dappReducer.redirectToHome
   }
 }
@@ -120,7 +116,6 @@ const mapDispatchToProps = dispatch => {
   return {
     onMetaMaskCheckDone: () => dispatch({ type: "CHECK_METAMASK_DONE" }),
     onTxErrorDone: () => dispatch({ type: "TX_ERROR_METAMASK_DONE" }),
-    onCheckingTxDone: () => dispatch({ type: "CHECKING_TX_UI_DONE" }),
     onRedirectToHomeDone: () => dispatch({ type: "REDIRECT_TO_HOME_DONE"})
   };
 };
