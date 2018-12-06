@@ -23,10 +23,8 @@ class Home extends Component {
   }
 
   async getStoredData() {
-    // const contract = this.contracts.SimpleStorage;
     let storedData = await this.contracts.SimpleStorage.methods.storedData_().call();
     this.setState({storedData: storedData});
-    // console.log("storedData: ", storedData);    
   }
 
   componentDidMount() {
@@ -42,21 +40,19 @@ class Home extends Component {
     if (this.props.txSuccessful && prevProps.txSuccessful === false) {
       this.getStoredData();
     }
-
   }
 
   render() {
     const { classes } = this.props;
-
     return (
       <div>
           <Grid container spacing={40} alignItems="flex-end">
-            <div className={classes.heroContent}>             
+            <div className={classes.heroContent}>
                 <div>
                   <Typography variant="subtitle1" align="center">
-                    Storedata: {this.props.SimpleStorage.initialized ? ( this.state.storedData ) : (
-                      <span>Loading...</span>
-                      )}
+                    Storedata: {
+                      this.props.SimpleStorage.initialized ? (this.state.storedData) : (<span> Loading... </span>)
+                    }
                   </Typography>
                 </div>
             </div>

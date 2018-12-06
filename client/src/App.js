@@ -47,12 +47,6 @@ const HomeBtn = withRouter(({ history }) => (
 ))
 
 class App extends Component {
-  constructor(props, context) {
-    super(props);
-    this.state = { storedData: null, newVal: null, drizzleState: null };
-    this.contracts = context.drizzle.contracts;
-  }
-
   render() {
     const { classes, onCheckingTxDone } = this.props;
     return (
@@ -113,14 +107,8 @@ App.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-App.contextTypes = {
-  drizzle: PropTypes.object
-}
-
 const mapStateToProps = state => {
   return {
-    drizzleStatus: state.drizzleStatus,
-    SimpleStorage: state.contracts.SimpleStorage,
     checkingTx: state.dappReducer.checkingTx
   }
 }
