@@ -1,16 +1,5 @@
 import { combineReducers } from 'redux';
-import { routerReducer } from 'react-router-redux'
 import { drizzleReducers } from 'drizzle';
-
-// import {
-//   CHECK_METAMASK,
-//   CHECK_METAMASK_DONE,
-//   TX_ERROR_METAMASK,
-//   TX_ERROR_METAMASK_DONE,
-//   CHECKING_TX_UI,
-//   CHECKING_TX_UI_DONE,
-//   TX_SUCCESSFUL_UPDATE_UI
-// } from './actions';
 
 // action types
 const CHECK_METAMASK = "CHECK_METAMASK";
@@ -58,7 +47,6 @@ function dappReducer(state = initialState, action) {
 }
 
 export default combineReducers({
-  routing: routerReducer,
   dappReducer,
   ...drizzleReducers
 });
