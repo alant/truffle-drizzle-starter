@@ -50,7 +50,7 @@ class Home extends Component {
             <div className={classes.heroContent}>
                 <div>
                   <Typography variant="subtitle1" align="center">
-                    Storedata: {
+                    Stored data: {
                       this.props.SimpleStorage.initialized ? (this.state.storedData) : (<span> Loading... </span>)
                     }
                   </Typography>
