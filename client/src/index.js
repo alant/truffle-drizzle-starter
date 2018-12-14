@@ -11,7 +11,14 @@ import { generateContractsInitialState } from 'drizzle';
 import createSagaMiddleware from 'redux-saga';
 import rootSaga from './sagas';
 import reducer from './reducers';
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
+const theme = createMuiTheme({
+  typography: {
+    useNextVariants: true,
+    suppressDeprecationWarnings: true
+  }
+});
 
 const drizzleOptions = {
   contracts: [SimpleStorage]
@@ -38,10 +45,13 @@ const store = createStore(
 
 sagaMiddleware.run(rootSaga);
 
-ReactDOM.render((
-  <DrizzleProvider options={drizzleOptions} store={store}>
-     <App />
-  </DrizzleProvider>
+ReactDOM.render(
+  (
+    <MuiThemeProvider theme={theme}>
+      <DrizzleProvider options={drizzleOptions} store={store}>
+         <App />
+      </DrizzleProvider>
+    </MuiThemeProvider>
   ),
   document.getElementById('root')
 );

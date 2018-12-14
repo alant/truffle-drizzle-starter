@@ -65,8 +65,8 @@ class Edit extends Component {
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
               {"Please go to MetaMask's window to finish the transaction."}
-              <LinearProgress />
             </DialogContentText>
+            <LinearProgress />
           </DialogContent>
           <DialogActions>
             <Button onClick={onMetaMaskCheckDone} color="primary" autoFocus>
