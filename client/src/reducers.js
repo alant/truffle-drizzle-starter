@@ -11,6 +11,9 @@ const CHECKING_TX_UI = "CHECKING_TX_UI";
 const CHECKING_TX_UI_DONE = "CHECKING_TX_UI_DONE";
 const REDIRECT_HOME = "REDIRECT_HOME";
 const REDIRECT_TO_HOME_DONE = "REDIRECT_TO_HOME_DONE";
+const SET_DRIZZLE_STATE = "SET_DRIZZLE_STATE";
+const GETTING_STORED_VALUE = "GETTING_STORED_VALUE";
+const GOT_STORED_VALUE = "GOT_STORED_VALUE";
 
 // reducer with initial state
 const initialState = {
@@ -18,7 +21,10 @@ const initialState = {
   metaMaskReject: false,
   checkingTx: false,
   txSuccessful: false,
-  redirectToHome: false
+  redirectToHome: false,
+  drizzle: null,
+  gotStoredValue: false,
+  storedValue: null
 };
 
 function dappReducer(state = initialState, action) {
@@ -40,7 +46,13 @@ function dappReducer(state = initialState, action) {
     case REDIRECT_HOME:
       return { ...state, redirectToHome: true };
     case REDIRECT_TO_HOME_DONE:
-      return { ...state, redirectToHome: false};
+      return { ...state, redirectToHome: false };
+    case SET_DRIZZLE_STATE:
+      return { ...state, drizzle: action.drizzle };
+    case GETTING_STORED_VALUE:
+      return { ...state, gotStoredValue: false };
+    case GOT_STORED_VALUE:
+      return { ...state, gotStoredValue: true, storedValue: action.storedValue };
     default:
       return state;
   }

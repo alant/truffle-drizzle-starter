@@ -47,6 +47,12 @@ const HomeBtn = withRouter(({ history }) => (
 ))
 
 class App extends Component {
+  constructor(props, context) {
+    super(props);
+    const { onSetDrizzleState } = this.props;
+    onSetDrizzleState(context.drizzle);
+  }
+
   render() {
     const { classes, onCheckingTxDone } = this.props;
     return (
@@ -107,6 +113,10 @@ App.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
+App.contextTypes = {
+  drizzle: PropTypes.object
+}
+
 const mapStateToProps = state => {
   return {
     checkingTx: state.dappReducer.checkingTx
@@ -115,7 +125,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onCheckingTxDone: () => dispatch({ type: "CHECKING_TX_UI_DONE" })
+    onCheckingTxDone: () => dispatch({ type: "CHECKING_TX_UI_DONE" }),
+    onSetDrizzleState: (drizzle) => dispatch({ type: "SET_DRIZZLE_STATE", drizzle: drizzle })
   };
 };
 

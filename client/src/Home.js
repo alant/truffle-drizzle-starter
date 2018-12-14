@@ -16,29 +16,15 @@ const styles = theme => ({
 });
 
 class Home extends Component {
-  constructor(props, context) {
-    super(props);
-    this.state = { storedData: null };
-    this.contracts = context.drizzle.contracts;
-  }
-
-  async getStoredData() {
-    let storedData = await this.contracts.SimpleStorage.methods.storedData_().call();
-    this.setState({storedData: storedData});
-  }
-
-  componentDidMount() {
-    if (this.props.SimpleStorage.initialized) {
-      this.getStoredData();
-    }
-  }
-
   componentDidUpdate(prevProps) {
+    const { onGetStoredValue } = this.props;
     if (this.props.SimpleStorage.initialized && this.props.SimpleStorage.initialized !== prevProps.SimpleStorage.initialized) {
-      this.getStoredData();
+      // this.getStoredData();
+      onGetStoredValue();
     }
     if (this.props.txSuccessful && prevProps.txSuccessful === false) {
-      this.getStoredData();
+      // this.getStoredData();
+      onGetStoredValue();
     }
   }
 
@@ -50,8 +36,10 @@ class Home extends Component {
             <div className={classes.heroContent}>
                 <div>
                   <Typography variant="subtitle1" align="center">
-                    Stored data: {
-                      this.props.SimpleStorage.initialized ? (this.state.storedData) : (<span> Loading... </span>)
+                    { 'Storeddata:' }
+                    { this.props.gotStoredValue
+                      ? this.props.storedValue
+                      : <span> Loading... </span>
                     }
                   </Typography>
                 </div>
@@ -66,15 +54,13 @@ Home.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-Home.contextTypes = {
-  drizzle: PropTypes.object
-}
-
 const mapStateToProps = state => {
   return {
     drizzleStatus: state.drizzleStatus,
     SimpleStorage: state.contracts.SimpleStorage,
-    txSuccessful: state.dappReducer.txSuccessful
+    txSuccessful: state.dappReducer.txSuccessful,
+    gotStoredValue: state.dappReducer.gotStoredValue,
+    storedValue: state.dappReducer.storedValue
   }
 }
 
@@ -82,7 +68,19 @@ const mapDispatchToProps = dispatch => {
   return {
     onMetaMaskCheckDone: () => dispatch({ type: "CHECK_METAMASK_DONE" }),
     onTxErrorDone: () => dispatch({ type: "TX_ERROR_METAMASK_DONE" }),
+    onGetStoredValue: () => dispatch({ type: "GET_STORED_VALUE" })
   };
 };
 
-export default drizzleConnect(withStyles(styles)(Home), mapStateToProps, mapDispatchToProps);
+function withLoadingIndicator(Component) {
+  return function EnhancedComponent({ isDrizzleLoading, ...props }) {
+    if (!isDrizzleLoading) {
+      return <Home {...props} />;
+    }
+    return <div>Drizzle loading</div>
+  }
+}
+
+const HomeWithDrizzleLoadingIndicator = withLoadingIndicator(Home);
+
+export default drizzleConnect(withStyles(styles)(HomeWithDrizzleLoadingIndicator), mapStateToProps, mapDispatchToProps);
