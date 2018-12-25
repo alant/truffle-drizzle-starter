@@ -19,11 +19,9 @@ class Home extends Component {
   componentDidUpdate(prevProps) {
     const { onGetStoredValue } = this.props;
     if (this.props.SimpleStorage.initialized && this.props.SimpleStorage.initialized !== prevProps.SimpleStorage.initialized) {
-      // this.getStoredData();
       onGetStoredValue();
     }
     if (this.props.txSuccessful && prevProps.txSuccessful === false) {
-      // this.getStoredData();
       onGetStoredValue();
     }
   }
@@ -56,7 +54,6 @@ Home.propTypes = {
 
 const mapStateToProps = state => {
   return {
-    drizzleStatus: state.drizzleStatus,
     SimpleStorage: state.contracts.SimpleStorage,
     txSuccessful: state.dappReducer.txSuccessful,
     gotStoredValue: state.dappReducer.gotStoredValue,
@@ -66,8 +63,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onMetaMaskCheckDone: () => dispatch({ type: "CHECK_METAMASK_DONE" }),
-    onTxErrorDone: () => dispatch({ type: "TX_ERROR_METAMASK_DONE" }),
     onGetStoredValue: () => dispatch({ type: "GET_STORED_VALUE" })
   };
 };
